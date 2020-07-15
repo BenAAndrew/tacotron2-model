@@ -8,14 +8,14 @@ from torch import nn
 from torch import max as torchmax
 from math import sqrt
 
-from attention import Attention
-from decoder import Decoder
-from encoder import Encoder
-from layers import LocationLayer
-from normalizers import ConvNorm, LinearNorm
-from postnet import Postnet
-from prenet import Prenet
-from utils import to_gpu, get_mask_from_lengths
+from tacotron2_model.attention import Attention
+from tacotron2_model.decoder import Decoder
+from tacotron2_model.encoder import Encoder
+from tacotron2_model.layers import LocationLayer
+from tacotron2_model.normalizers import ConvNorm, LinearNorm
+from tacotron2_model.postnet import Postnet
+from tacotron2_model.prenet import Prenet
+from tacotron2_model.utils import to_gpu, get_mask_from_lengths
 
 
 class Tacotron2(nn.Module):

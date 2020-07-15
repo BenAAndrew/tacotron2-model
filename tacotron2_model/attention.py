@@ -6,8 +6,8 @@ All rights reserved.
 """
 from torch import nn, tanh, bmm
 
-from layers import LocationLayer
-from normalizers import LinearNorm
+from tacotron2_model.layers import LocationLayer
+from tacotron2_model.normalizers import LinearNorm
 
 
 class Attention(nn.Module):

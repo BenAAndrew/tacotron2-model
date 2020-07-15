@@ -4,6 +4,8 @@ BSD 3-Clause License
 Copyright (c) 2018, NVIDIA Corporation
 All rights reserved.
 """
+
+
 def to_gpu(x):
     x = x.contiguous()
     x = x.cuda(non_blocking=True)
