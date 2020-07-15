@@ -8,10 +8,10 @@ A pytorch install is required but is not added to requirements to avoid configur
 The only change from the NVIDIA original is a replacement of hparams with individual arguments.
 This removes the dependency on tf.contrib.training.HParams (deprecated since tensorflow 1).
 
-## Usage
+## Model usage
 
 ```
-from tacotron2_model.tacotron2 import Tacotron2
+from tacotron2_model import Tacotron2
 
 model = Tacotron2(N_MEL_CHANNELS, N_SYMBOLS, SYMBOLS_EMBEDDING_DIM, 
                   ENCODER_N_CONVOLUTIONS, ENCODER_EMBEDDING_DIM, 
@@ -22,6 +22,14 @@ model = Tacotron2(N_MEL_CHANNELS, N_SYMBOLS, SYMBOLS_EMBEDDING_DIM,
                   POSTNET_KERNEL_SIZE, POSTNET_N_CONVOLUTIONS).cuda()
 
 print(model.eval())
+```
+
+## Loss usage
+
+```
+from tacotron2_model import Tacotron2Loss
+
+criterion = Tacotron2Loss()
 ```
 
 ## Example params
