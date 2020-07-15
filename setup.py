@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="tacotron2-model",
-    version="0.1.3",
+    version="0.1.4",
     author="Ben Andrew",
     author_email="benandrew89@gmail.com",
     description="A PyPI port of the NVIDIA Tacotron2 model",
@@ -18,6 +18,6 @@ setuptools.setup(
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
     ],
-    install_requires=["pytorch>=1.0",],
+    install_requires=[],
     python_requires=">=3.5",
 )
