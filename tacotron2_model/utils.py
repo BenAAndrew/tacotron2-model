@@ -6,6 +6,7 @@ All rights reserved.
 """
 import torch
 
+
 def to_gpu(x):
     x = x.contiguous()
     x = x.cuda(non_blocking=True)

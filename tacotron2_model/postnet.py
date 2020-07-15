@@ -7,6 +7,7 @@ All rights reserved.
 from torch import nn, tanh
 
 from tacotron2_model.normalizers import ConvNorm
+from torch.nn import functional as F
 
 
 class Postnet(nn.Module):
