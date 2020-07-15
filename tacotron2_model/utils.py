@@ -4,7 +4,7 @@ BSD 3-Clause License
 Copyright (c) 2018, NVIDIA Corporation
 All rights reserved.
 """
-
+import torch
 
 def to_gpu(x):
     x = x.contiguous()
