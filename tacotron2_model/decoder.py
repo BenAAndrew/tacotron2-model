@@ -6,10 +6,10 @@ All rights reserved.
 """
 from torch import nn, stack, cat, sigmoid
 
-from attention import Attention
-from normalizers import LinearNorm
-from prenet import Prenet
-from utils import get_mask_from_lengths
+from tacotron2_model.attention import Attention
+from tacotron2_model.normalizers import LinearNorm
+from tacotron2_model.prenet import Prenet
+from tacotron2_model.utils import get_mask_from_lengths
 
 
 class Decoder(nn.Module):

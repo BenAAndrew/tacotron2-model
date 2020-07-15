@@ -6,7 +6,7 @@ All rights reserved.
 """
 from torch import nn
 
-from normalizers import LinearNorm
+from tacotron2_model.normalizers import LinearNorm
 
 
 class Prenet(nn.Module):

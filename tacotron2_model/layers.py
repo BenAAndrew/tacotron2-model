@@ -6,7 +6,8 @@ All rights reserved.
 """
 from torch import nn
 
-from normalizers import ConvNorm, LinearNorm
+from tacotron2_model.normalizers import ConvNorm, LinearNorm
+
 
 class LocationLayer(nn.Module):
     def __init__(self, attention_n_filters, attention_kernel_size, attention_dim):

@@ -6,7 +6,7 @@ All rights reserved.
 """
 from torch import nn
 
-from normalizers import ConvNorm
+from tacotron2_model.normalizers import ConvNorm
 
 
 class Encoder(nn.Module):
