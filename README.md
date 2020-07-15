@@ -5,7 +5,8 @@ Source: https://github.com/NVIDIA/tacotron2 (model.py)
 
 A pytorch install is required but is not added to requirements to avoid configuration issues.
 
-The only change from the NVIDIA original is a replacement of hparams with individual arguments to remove the dependency on tf.contrib.training.HParams (deprecated since tensorflow 1).
+The only change from the NVIDIA original is a replacement of hparams with individual arguments.
+This removes the dependency on tf.contrib.training.HParams (deprecated since tensorflow 1).
 
 ## Usage
 
