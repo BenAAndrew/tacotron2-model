@@ -1,1 +1,1 @@
-pytorch>=0.1
+pytorch>=1.0
