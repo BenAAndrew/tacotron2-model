@@ -6,6 +6,7 @@ All rights reserved.
 """
 from torch import nn, stack, cat, sigmoid
 from torch.nn import functional as F
+from torch.autograd import Variable
 
 from tacotron2_model.attention import Attention
 from tacotron2_model.normalizers import LinearNorm
