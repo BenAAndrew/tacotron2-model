@@ -29,7 +29,9 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
+import numpy as np
 import torch
+from scipy.io.wavfile import read
 
 
 def to_gpu(x):
@@ -43,3 +45,26 @@ def get_mask_from_lengths(lengths):
     ids = torch.arange(0, max_len, out=torch.cuda.LongTensor(max_len))
     mask = (ids < lengths.unsqueeze(1)).bool()
     return mask
+
+
+def dynamic_range_compression(x, C=1, clip_val=1e-5):
+    """
+    PARAMS
+    ------
+    C: compression factor
+    """
+    return torch.log(torch.clamp(x, min=clip_val) * C)
+
+
+def dynamic_range_decompression(x, C=1):
+    """
+    PARAMS
+    ------
+    C: compression factor used to compress
+    """
+    return torch.exp(x) / C
+
+
+def load_wav_to_torch(full_path):
+    sampling_rate, data = read(full_path)
+    return torch.FloatTensor(data.astype(np.float32)), sampling_rate
