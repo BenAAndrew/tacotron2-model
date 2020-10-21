@@ -26,3 +26,12 @@ from tacotron2_model import Tacotron2Loss
 
 criterion = Tacotron2Loss()
 ```
+
+
+## Collate usage
+
+```
+from tacotron2_model import TextMelCollate
+
+collate_fn = TextMelCollate()
+```
