@@ -29,14 +29,13 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
-
 from math import sqrt
 import torch
 from torch.autograd import Variable
 from torch import nn
 from torch.nn import functional as F
-from layers import ConvNorm, LinearNorm
-from utils import to_gpu, get_mask_from_lengths
+from tacotron2_model.layers import ConvNorm, LinearNorm
+from tacotron2_model.utils import to_gpu, get_mask_from_lengths
 
 
 class LocationLayer(nn.Module):

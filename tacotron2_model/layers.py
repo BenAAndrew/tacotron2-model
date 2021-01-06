@@ -29,12 +29,11 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
-
 import torch
 from librosa.filters import mel as librosa_mel_fn
-from audio_processing import dynamic_range_compression
-from audio_processing import dynamic_range_decompression
-from stft import STFT
+from tacotron2_model.audio_processing import dynamic_range_compression
+from tacotron2_model.audio_processing import dynamic_range_decompression
+from tacotron2_model.stft import STFT
 
 
 class LinearNorm(torch.nn.Module):
