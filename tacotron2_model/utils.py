@@ -30,14 +30,8 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 import numpy as np
-import torch
 from scipy.io.wavfile import read
-
-
-def to_gpu(x):
-    x = x.contiguous()
-    x = x.cuda(non_blocking=True)
-    return torch.autograd.Variable(x)
+import torch
 
 
 def get_mask_from_lengths(lengths):
@@ -47,24 +41,20 @@ def get_mask_from_lengths(lengths):
     return mask
 
 
-def dynamic_range_compression(x, C=1, clip_val=1e-5):
-    """
-    PARAMS
-    ------
-    C: compression factor
-    """
-    return torch.log(torch.clamp(x, min=clip_val) * C)
-
-
-def dynamic_range_decompression(x, C=1):
-    """
-    PARAMS
-    ------
-    C: compression factor used to compress
-    """
-    return torch.exp(x) / C
-
-
 def load_wav_to_torch(full_path):
     sampling_rate, data = read(full_path)
     return torch.FloatTensor(data.astype(np.float32)), sampling_rate
+
+
+def load_filepaths_and_text(filename, split="|"):
+    with open(filename, encoding="utf-8") as f:
+        filepaths_and_text = [line.strip().split(split) for line in f]
+    return filepaths_and_text
+
+
+def to_gpu(x):
+    x = x.contiguous()
+
+    if torch.cuda.is_available():
+        x = x.cuda(non_blocking=True)
+    return torch.autograd.Variable(x)

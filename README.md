@@ -13,9 +13,7 @@ This removes the dependency on tf.contrib.training.HParams (deprecated since ten
 ```
 from tacotron2_model import Tacotron2
 
-symbols = "!\'(),.:;?_- ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-model = Tacotron2(n_symbols=len(symbols)).cuda()
-
+model = Tacotron2().cuda()
 print(model.eval())
 ```
 

@@ -1,43 +1,41 @@
 """
 BSD 3-Clause License
 
-Copyright (c) 2018, NVIDIA Corporation
+Copyright (c) 2017, Prem Seetharaman
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
+* Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions are met:
 
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright notice,
+  this list of conditions and the following disclaimer.
 
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
+* Redistributions in binary form must reproduce the above copyright notice, this
+  list of conditions and the following disclaimer in the
+  documentation and/or other materials provided with the distribution.
 
 * Neither the name of the copyright holder nor the names of its
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission.
+  contributors may be used to endorse or promote products derived from this
+  software without specific prior written permission.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
-import numpy as np
 import torch
-from torch.nn import functional as F
+import numpy as np
+import torch.nn.functional as F
 from torch.autograd import Variable
 from scipy.signal import get_window
 from librosa.util import pad_center, tiny
-from librosa.filters import mel as librosa_mel_fn
-
-from tacotron2_model.utils import dynamic_range_compression, dynamic_range_decompression
+from audio_processing import window_sumsquare
 
 
 class STFT(torch.nn.Module):
@@ -136,49 +134,3 @@ class STFT(torch.nn.Module):
         self.magnitude, self.phase = self.transform(input_data)
         reconstruction = self.inverse(self.magnitude, self.phase)
         return reconstruction
-
-
-class TacotronSTFT(torch.nn.Module):
-    def __init__(
-        self,
-        filter_length=1024,
-        hop_length=256,
-        win_length=1024,
-        n_mel_channels=80,
-        sampling_rate=22050,
-        mel_fmin=0.0,
-        mel_fmax=8000.0,
-    ):
-        super(TacotronSTFT, self).__init__()
-        self.n_mel_channels = n_mel_channels
-        self.sampling_rate = sampling_rate
-        self.stft_fn = STFT(filter_length, hop_length, win_length)
-        mel_basis = librosa_mel_fn(sampling_rate, filter_length, n_mel_channels, mel_fmin, mel_fmax)
-        mel_basis = torch.from_numpy(mel_basis).float()
-        self.register_buffer("mel_basis", mel_basis)
-
-    def spectral_normalize(self, magnitudes):
-        output = dynamic_range_compression(magnitudes)
-        return output
-
-    def spectral_de_normalize(self, magnitudes):
-        output = dynamic_range_decompression(magnitudes)
-        return output
-
-    def mel_spectrogram(self, y):
-        """Computes mel-spectrograms from a batch of waves
-        PARAMS
-        ------
-        y: Variable(torch.FloatTensor) with shape (B, T) in range [-1, 1]
-        RETURNS
-        -------
-        mel_output: torch.FloatTensor of shape (B, n_mel_channels, T)
-        """
-        assert torch.min(y.data) >= -1
-        assert torch.max(y.data) <= 1
-
-        magnitudes, phases = self.stft_fn.transform(y)
-        magnitudes = magnitudes.data
-        mel_output = torch.matmul(self.mel_basis, magnitudes)
-        mel_output = self.spectral_normalize(mel_output)
-        return mel_output
